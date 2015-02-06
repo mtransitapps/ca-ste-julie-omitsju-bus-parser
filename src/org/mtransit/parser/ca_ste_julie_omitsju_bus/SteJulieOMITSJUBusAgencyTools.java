@@ -82,7 +82,12 @@ public class SteJulieOMITSJUBusAgencyTools extends DefaultAgencyTools {
 		return MSpec.cleanLabel(routeLongName);
 	}
 
-	private static final String ROUTE_COLOR = "649039";
+	private static final String AGENCY_COLOR = "649039";
+
+	@Override
+	public String getAgencyColor() {
+		return AGENCY_COLOR;
+	}
 
 	@Override
 	public String getRouteColor(GRoute gRoute) {
@@ -101,7 +106,7 @@ public class SteJulieOMITSJUBusAgencyTools extends DefaultAgencyTools {
 		if ("T110".equals(gRoute.route_short_name)) return "EE423C";
 		if ("T120".equals(gRoute.route_short_name)) return "008784";
 		if ("T510".equals(gRoute.route_short_name)) return "764526";
-		return ROUTE_COLOR;
+		return super.getRouteColor(gRoute);
 	}
 
 	@Override
