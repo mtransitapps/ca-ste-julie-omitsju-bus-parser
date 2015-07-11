@@ -86,24 +86,55 @@ public class SteJulieOMITSJUBusAgencyTools extends DefaultAgencyTools {
 		return AGENCY_COLOR;
 	}
 
+	private static final String COLOR_7C51A1 = "7C51A1";
+	private static final String COLOR_AC9349 = "AC9349";
+	private static final String COLOR_38BABE = "38BABE";
+	private static final String COLOR_3AB54A = "3AB54A";
+	private static final String COLOR_57585A = "57585A";
+	private static final String COLOR_F7931D = "F7931D";
+	private static final String COLOR_E6C303 = "E6C303";
+	private static final String COLOR_00A4D5 = "00A4D5";
+	private static final String COLOR_ED028C = "ED028C";
+	private static final String COLOR_EE423C = "EE423C";
+	private static final String COLOR_008784 = "008784";
+	private static final String COLOR_764526 = "764526";
+
+	private static final String RSN_100 = "100";
+	private static final String RSN_200 = "200";
+	private static final String RSN_220 = "220";
+	private static final String RSN_250 = "250";
+	private static final String RSN_325 = "325";
+	private static final String RSN_330 = "330";
+	private static final String RSN_340 = "340";
+	private static final String RSN_350 = "350";
+	private static final String RSN_450 = "450";
+	private static final String RSN_500 = "500";
+	private static final String RSN_600 = "600";
+	private static final String RSN_800 = "800";
+	private static final String RSN_T110 = "T110";
+	private static final String RSN_T120 = "T120";
+	private static final String RSN_T510 = "T510";
+
 	@Override
 	public String getRouteColor(GRoute gRoute) {
-		if ("100".equals(gRoute.route_short_name)) return "7C51A1";
-		if ("200".equals(gRoute.route_short_name)) return "AC9349";
-		if ("220".equals(gRoute.route_short_name)) return "38BABE";
-		if ("250".equals(gRoute.route_short_name)) return "3AB54A";
-		if ("325".equals(gRoute.route_short_name)) return "57585A";
-		if ("330".equals(gRoute.route_short_name)) return "57585A";
-		if ("340".equals(gRoute.route_short_name)) return "57585A";
-		if ("350".equals(gRoute.route_short_name)) return "57585A";
-		if ("450".equals(gRoute.route_short_name)) return "F7931D";
-		if ("500".equals(gRoute.route_short_name)) return "E6C303";
-		if ("600".equals(gRoute.route_short_name)) return "00A4D5";
-		if ("800".equals(gRoute.route_short_name)) return "ED028C";
-		if ("T110".equals(gRoute.route_short_name)) return "EE423C";
-		if ("T120".equals(gRoute.route_short_name)) return "008784";
-		if ("T510".equals(gRoute.route_short_name)) return "764526";
-		return super.getRouteColor(gRoute);
+		if (RSN_100.equals(gRoute.route_short_name)) return COLOR_7C51A1;
+		if (RSN_200.equals(gRoute.route_short_name)) return COLOR_AC9349;
+		if (RSN_220.equals(gRoute.route_short_name)) return COLOR_38BABE;
+		if (RSN_250.equals(gRoute.route_short_name)) return COLOR_3AB54A;
+		if (RSN_325.equals(gRoute.route_short_name)) return COLOR_57585A;
+		if (RSN_330.equals(gRoute.route_short_name)) return COLOR_57585A;
+		if (RSN_340.equals(gRoute.route_short_name)) return COLOR_57585A;
+		if (RSN_350.equals(gRoute.route_short_name)) return COLOR_57585A;
+		if (RSN_450.equals(gRoute.route_short_name)) return COLOR_F7931D;
+		if (RSN_500.equals(gRoute.route_short_name)) return COLOR_E6C303;
+		if (RSN_600.equals(gRoute.route_short_name)) return COLOR_00A4D5;
+		if (RSN_800.equals(gRoute.route_short_name)) return COLOR_ED028C;
+		if (RSN_T110.equals(gRoute.route_short_name)) return COLOR_EE423C;
+		if (RSN_T120.equals(gRoute.route_short_name)) return COLOR_008784;
+		if (RSN_T510.equals(gRoute.route_short_name)) return COLOR_764526;
+		System.out.printf("\nUnexpected route color %s", gRoute);
+		System.exit(-1);
+		return null;
 	}
 
 	@Override
@@ -147,9 +178,11 @@ public class SteJulieOMITSJUBusAgencyTools extends DefaultAgencyTools {
 		return super.cleanStopNameFR(gStopName);
 	}
 
+	private static final String ZERO = "0";
+
 	@Override
 	public String getStopCode(GStop gStop) {
-		if ("0".equals(gStop.stop_code)) {
+		if (ZERO.equals(gStop.stop_code)) {
 			return null;
 		}
 		return super.getStopCode(gStop);
