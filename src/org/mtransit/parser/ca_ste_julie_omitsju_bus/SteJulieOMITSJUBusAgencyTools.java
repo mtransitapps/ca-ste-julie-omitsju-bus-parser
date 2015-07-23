@@ -73,7 +73,7 @@ public class SteJulieOMITSJUBusAgencyTools extends DefaultAgencyTools {
 
 	@Override
 	public String getRouteLongName(GRoute gRoute) {
-		String routeLongName = gRoute.route_long_name;
+		String routeLongName = gRoute.getRouteLongName();
 		routeLongName = CleanUtils.SAINT.matcher(routeLongName).replaceAll(CleanUtils.SAINT_REPLACEMENT);
 		routeLongName = SECTEUR.matcher(routeLongName).replaceAll(SECTEUR_REPLACEMENT);
 		return CleanUtils.cleanLabel(routeLongName);
@@ -117,21 +117,21 @@ public class SteJulieOMITSJUBusAgencyTools extends DefaultAgencyTools {
 
 	@Override
 	public String getRouteColor(GRoute gRoute) {
-		if (RSN_100.equals(gRoute.route_short_name)) return COLOR_7C51A1;
-		if (RSN_200.equals(gRoute.route_short_name)) return COLOR_AC9349;
-		if (RSN_220.equals(gRoute.route_short_name)) return COLOR_38BABE;
-		if (RSN_250.equals(gRoute.route_short_name)) return COLOR_3AB54A;
-		if (RSN_325.equals(gRoute.route_short_name)) return COLOR_57585A;
-		if (RSN_330.equals(gRoute.route_short_name)) return COLOR_57585A;
-		if (RSN_340.equals(gRoute.route_short_name)) return COLOR_57585A;
-		if (RSN_350.equals(gRoute.route_short_name)) return COLOR_57585A;
-		if (RSN_450.equals(gRoute.route_short_name)) return COLOR_F7931D;
-		if (RSN_500.equals(gRoute.route_short_name)) return COLOR_E6C303;
-		if (RSN_600.equals(gRoute.route_short_name)) return COLOR_00A4D5;
-		if (RSN_800.equals(gRoute.route_short_name)) return COLOR_ED028C;
-		if (RSN_T110.equals(gRoute.route_short_name)) return COLOR_EE423C;
-		if (RSN_T120.equals(gRoute.route_short_name)) return COLOR_008784;
-		if (RSN_T510.equals(gRoute.route_short_name)) return COLOR_764526;
+		if (RSN_100.equals(gRoute.getRouteShortName())) return COLOR_7C51A1;
+		if (RSN_200.equals(gRoute.getRouteShortName())) return COLOR_AC9349;
+		if (RSN_220.equals(gRoute.getRouteShortName())) return COLOR_38BABE;
+		if (RSN_250.equals(gRoute.getRouteShortName())) return COLOR_3AB54A;
+		if (RSN_325.equals(gRoute.getRouteShortName())) return COLOR_57585A;
+		if (RSN_330.equals(gRoute.getRouteShortName())) return COLOR_57585A;
+		if (RSN_340.equals(gRoute.getRouteShortName())) return COLOR_57585A;
+		if (RSN_350.equals(gRoute.getRouteShortName())) return COLOR_57585A;
+		if (RSN_450.equals(gRoute.getRouteShortName())) return COLOR_F7931D;
+		if (RSN_500.equals(gRoute.getRouteShortName())) return COLOR_E6C303;
+		if (RSN_600.equals(gRoute.getRouteShortName())) return COLOR_00A4D5;
+		if (RSN_800.equals(gRoute.getRouteShortName())) return COLOR_ED028C;
+		if (RSN_T110.equals(gRoute.getRouteShortName())) return COLOR_EE423C;
+		if (RSN_T120.equals(gRoute.getRouteShortName())) return COLOR_008784;
+		if (RSN_T510.equals(gRoute.getRouteShortName())) return COLOR_764526;
 		System.out.printf("\nUnexpected route color %s", gRoute);
 		System.exit(-1);
 		return null;
@@ -139,7 +139,7 @@ public class SteJulieOMITSJUBusAgencyTools extends DefaultAgencyTools {
 
 	@Override
 	public void setTripHeadsign(MRoute mRoute, MTrip mTrip, GTrip gTrip, GSpec gtfs) {
-		mTrip.setHeadsignString(cleanTripHeadsign(gTrip.trip_headsign), gTrip.direction_id);
+		mTrip.setHeadsignString(cleanTripHeadsign(gTrip.getTripHeadsign()), gTrip.getDirectionId());
 	}
 
 	private static final Pattern DIRECTION = Pattern.compile("(direction )", Pattern.CASE_INSENSITIVE);
@@ -182,7 +182,7 @@ public class SteJulieOMITSJUBusAgencyTools extends DefaultAgencyTools {
 
 	@Override
 	public String getStopCode(GStop gStop) {
-		if (ZERO.equals(gStop.stop_code)) {
+		if (ZERO.equals(gStop.getStopCode())) {
 			return null;
 		}
 		return super.getStopCode(gStop);
@@ -197,7 +197,7 @@ public class SteJulieOMITSJUBusAgencyTools extends DefaultAgencyTools {
 			return Integer.valueOf(stopCode); // using stop code as stop ID
 		}
 		// generating integer stop ID
-		Matcher matcher = DIGITS.matcher(gStop.stop_id);
+		Matcher matcher = DIGITS.matcher(gStop.getStopId());
 		matcher.find();
 		int digits = Integer.parseInt(matcher.group());
 		int stopId;
@@ -208,5 +208,4 @@ public class SteJulieOMITSJUBusAgencyTools extends DefaultAgencyTools {
 		System.exit(-1);
 		return stopId + digits;
 	}
-
 }
