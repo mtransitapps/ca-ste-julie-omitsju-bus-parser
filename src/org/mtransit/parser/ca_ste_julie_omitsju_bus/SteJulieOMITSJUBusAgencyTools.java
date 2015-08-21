@@ -152,6 +152,7 @@ public class SteJulieOMITSJUBusAgencyTools extends DefaultAgencyTools {
 	public String cleanTripHeadsign(String tripHeadsign) {
 		tripHeadsign = DIRECTION.matcher(tripHeadsign).replaceAll(DIRECTION_REPLACEMENT);
 		tripHeadsign = SECTEUR.matcher(tripHeadsign).replaceAll(SECTEUR_REPLACEMENT);
+		tripHeadsign = CleanUtils.cleanStreetTypesFRCA(tripHeadsign);
 		return CleanUtils.cleanLabelFR(tripHeadsign);
 	}
 
@@ -175,7 +176,8 @@ public class SteJulieOMITSJUBusAgencyTools extends DefaultAgencyTools {
 		gStopName = AVENUE.matcher(gStopName).replaceAll(AVENUE_REPLACEMENT);
 		gStopName = Utils.replaceAll(gStopName, START_WITH_FACES, CleanUtils.SPACE);
 		gStopName = Utils.replaceAll(gStopName, SPACE_FACES, CleanUtils.SPACE);
-		return super.cleanStopNameFR(gStopName);
+		gStopName = CleanUtils.cleanStreetTypesFRCA(gStopName);
+		return CleanUtils.cleanLabelFR(gStopName);
 	}
 
 	private static final String ZERO = "0";
