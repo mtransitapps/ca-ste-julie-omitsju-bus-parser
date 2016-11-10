@@ -1,6 +1,7 @@
 package org.mtransit.parser.ca_ste_julie_omitsju_bus;
 
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -71,6 +72,25 @@ public class SteJulieOMITSJUBusAgencyTools extends DefaultAgencyTools {
 		return MAgency.ROUTE_TYPE_BUS;
 	}
 
+	private static final long RID_STARTS_WITH_T = 20000l;
+
+	@Override
+	public long getRouteId(GRoute gRoute) {
+		if (Utils.isDigitsOnly(gRoute.getRouteShortName())) {
+			return Long.parseLong(gRoute.getRouteShortName());
+		}
+		Matcher matcher = DIGITS.matcher(gRoute.getRouteId());
+		if (matcher.find()) {
+			long id = Long.parseLong(matcher.group());
+			if (gRoute.getRouteShortName().toLowerCase(Locale.ENGLISH).startsWith("t")) {
+				return id + RID_STARTS_WITH_T;
+			}
+		}
+		System.out.printf("\nUnexpected route ID for %s!\n", gRoute);
+		System.exit(-1);
+		return -1;
+	}
+
 	@Override
 	public String getRouteLongName(GRoute gRoute) {
 		String routeLongName = gRoute.getRouteLongName();
@@ -86,52 +106,23 @@ public class SteJulieOMITSJUBusAgencyTools extends DefaultAgencyTools {
 		return AGENCY_COLOR;
 	}
 
-	private static final String COLOR_7C51A1 = "7C51A1";
-	private static final String COLOR_AC9349 = "AC9349";
-	private static final String COLOR_38BABE = "38BABE";
-	private static final String COLOR_3AB54A = "3AB54A";
-	private static final String COLOR_57585A = "57585A";
-	private static final String COLOR_F7931D = "F7931D";
-	private static final String COLOR_E6C303 = "E6C303";
-	private static final String COLOR_00A4D5 = "00A4D5";
-	private static final String COLOR_ED028C = "ED028C";
-	private static final String COLOR_EE423C = "EE423C";
-	private static final String COLOR_008784 = "008784";
-	private static final String COLOR_764526 = "764526";
-
-	private static final String RSN_100 = "100";
-	private static final String RSN_200 = "200";
-	private static final String RSN_220 = "220";
-	private static final String RSN_250 = "250";
-	private static final String RSN_325 = "325";
-	private static final String RSN_330 = "330";
-	private static final String RSN_340 = "340";
-	private static final String RSN_350 = "350";
-	private static final String RSN_450 = "450";
-	private static final String RSN_500 = "500";
-	private static final String RSN_600 = "600";
-	private static final String RSN_800 = "800";
-	private static final String RSN_T110 = "T110";
-	private static final String RSN_T120 = "T120";
-	private static final String RSN_T510 = "T510";
-
 	@Override
 	public String getRouteColor(GRoute gRoute) {
-		if (RSN_100.equals(gRoute.getRouteShortName())) return COLOR_7C51A1;
-		if (RSN_200.equals(gRoute.getRouteShortName())) return COLOR_AC9349;
-		if (RSN_220.equals(gRoute.getRouteShortName())) return COLOR_38BABE;
-		if (RSN_250.equals(gRoute.getRouteShortName())) return COLOR_3AB54A;
-		if (RSN_325.equals(gRoute.getRouteShortName())) return COLOR_57585A;
-		if (RSN_330.equals(gRoute.getRouteShortName())) return COLOR_57585A;
-		if (RSN_340.equals(gRoute.getRouteShortName())) return COLOR_57585A;
-		if (RSN_350.equals(gRoute.getRouteShortName())) return COLOR_57585A;
-		if (RSN_450.equals(gRoute.getRouteShortName())) return COLOR_F7931D;
-		if (RSN_500.equals(gRoute.getRouteShortName())) return COLOR_E6C303;
-		if (RSN_600.equals(gRoute.getRouteShortName())) return COLOR_00A4D5;
-		if (RSN_800.equals(gRoute.getRouteShortName())) return COLOR_ED028C;
-		if (RSN_T110.equals(gRoute.getRouteShortName())) return COLOR_EE423C;
-		if (RSN_T120.equals(gRoute.getRouteShortName())) return COLOR_008784;
-		if (RSN_T510.equals(gRoute.getRouteShortName())) return COLOR_764526;
+		if ("1".equals(gRoute.getRouteShortName())) return "7E4A94";
+		if ("3".equals(gRoute.getRouteShortName())) return "41A62B";
+		if ("4".equals(gRoute.getRouteShortName())) return "EAC800";
+		if ("5".equals(gRoute.getRouteShortName())) return "E2007A";
+		if ("6".equals(gRoute.getRouteShortName())) return "B49C4C";
+		if ("7".equals(gRoute.getRouteShortName())) return "60BDDC";
+		if ("8".equals(gRoute.getRouteShortName())) return "F39400";
+		if ("T1".equals(gRoute.getRouteShortName())) return "E53834";
+		if ("T2".equals(gRoute.getRouteShortName())) return "007C79";
+		if ("T3".equals(gRoute.getRouteShortName())) return "79421E";
+		if ("325".equals(gRoute.getRouteShortName())) return "57585A";
+		if ("330".equals(gRoute.getRouteShortName())) return "57585A";
+		if ("340".equals(gRoute.getRouteShortName())) return "57585A";
+		if ("350".equals(gRoute.getRouteShortName())) return "57585A";
+		if ("600".equals(gRoute.getRouteShortName())) return "9C9E9F";
 		System.out.printf("\nUnexpected route color %s", gRoute);
 		System.exit(-1);
 		return null;
