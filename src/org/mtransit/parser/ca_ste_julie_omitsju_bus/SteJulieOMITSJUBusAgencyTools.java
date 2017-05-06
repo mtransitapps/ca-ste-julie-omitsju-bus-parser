@@ -19,7 +19,7 @@ import org.mtransit.parser.CleanUtils;
 import org.mtransit.parser.mt.data.MTrip;
 
 // https://www.amt.qc.ca/en/about/open-data
-// http://www.amt.qc.ca/xdata/omitsju/google_transit.zip
+// https://www.amt.qc.ca/xdata/omitsju/google_transit.zip
 public class SteJulieOMITSJUBusAgencyTools extends DefaultAgencyTools {
 
 	public static void main(String[] args) {
@@ -123,7 +123,7 @@ public class SteJulieOMITSJUBusAgencyTools extends DefaultAgencyTools {
 		if ("340".equals(gRoute.getRouteShortName())) return "57585A";
 		if ("350".equals(gRoute.getRouteShortName())) return "57585A";
 		if ("600".equals(gRoute.getRouteShortName())) return "9C9E9F";
-		System.out.printf("\nUnexpected route color %s", gRoute);
+		System.out.printf("\nUnexpected route color for %s!\n", gRoute);
 		System.exit(-1);
 		return null;
 	}
@@ -192,14 +192,26 @@ public class SteJulieOMITSJUBusAgencyTools extends DefaultAgencyTools {
 		}
 		// generating integer stop ID
 		Matcher matcher = DIGITS.matcher(gStop.getStopId());
-		matcher.find();
-		int digits = Integer.parseInt(matcher.group());
-		int stopId;
-		System.out.println("Stop doesn't have an ID (start with)! " + gStop);
+		if (matcher.find()) {
+			int digits = Integer.parseInt(matcher.group());
+			int stopId;
+			if (gStop.getStopId().startsWith("SJU")) {
+				stopId = 0;
+			} else {
+				System.out.printf("\nStop doesn't have an ID (start with)! %s\n", gStop);
+				System.exit(-1);
+				stopId = -1;
+			}
+			if (gStop.getStopId().endsWith("A")) {
+				stopId += 100000;
+			} else {
+				System.out.printf("\nStop doesn't have an ID (end with)! %s!\n", gStop);
+				System.exit(-1);
+			}
+			return stopId + digits;
+		}
+		System.out.printf("\nUnexpected stop ID for %s!\n", gStop);
 		System.exit(-1);
-		stopId = -1;
-		System.out.println("Stop doesn't have an ID (end with)! " + gStop);
-		System.exit(-1);
-		return stopId + digits;
+		return -1;
 	}
 }
