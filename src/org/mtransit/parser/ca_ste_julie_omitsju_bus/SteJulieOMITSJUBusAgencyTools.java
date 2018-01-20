@@ -68,6 +68,11 @@ public class SteJulieOMITSJUBusAgencyTools extends DefaultAgencyTools {
 	}
 
 	@Override
+	public boolean excludeRoute(GRoute gRoute) {
+		return super.excludeRoute(gRoute);
+	}
+
+	@Override
 	public Integer getAgencyRouteType() {
 		return MAgency.ROUTE_TYPE_BUS;
 	}
@@ -190,23 +195,27 @@ public class SteJulieOMITSJUBusAgencyTools extends DefaultAgencyTools {
 		if (stopCode != null && stopCode.length() > 0) {
 			return Integer.valueOf(stopCode); // using stop code as stop ID
 		}
-		// generating integer stop ID
 		Matcher matcher = DIGITS.matcher(gStop.getStopId());
 		if (matcher.find()) {
 			int digits = Integer.parseInt(matcher.group());
 			int stopId;
 			if (gStop.getStopId().startsWith("SJU")) {
 				stopId = 0;
+			} else if (gStop.getStopId().startsWith("LON")) {
+				stopId = 1_000_000;
 			} else {
 				System.out.printf("\nStop doesn't have an ID (start with)! %s\n", gStop);
 				System.exit(-1);
-				stopId = -1;
+				return -1;
 			}
 			if (gStop.getStopId().endsWith("A")) {
-				stopId += 100000;
+				stopId += 100_000;
+			} else if (gStop.getStopId().endsWith("B")) {
+				stopId += 200_000;
 			} else {
 				System.out.printf("\nStop doesn't have an ID (end with)! %s!\n", gStop);
 				System.exit(-1);
+				return -1;
 			}
 			return stopId + digits;
 		}
