@@ -192,7 +192,7 @@ public class SteJulieOMITSJUBusAgencyTools extends DefaultAgencyTools {
 	@Override
 	public int getStopId(GStop gStop) {
 		String stopCode = getStopCode(gStop);
-		if (stopCode != null && stopCode.length() > 0) {
+		if (stopCode != null && stopCode.length() > 0 && Utils.isDigitsOnly(stopCode)) {
 			return Integer.valueOf(stopCode); // using stop code as stop ID
 		}
 		Matcher matcher = DIGITS.matcher(gStop.getStopId());
