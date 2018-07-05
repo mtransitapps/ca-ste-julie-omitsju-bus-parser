@@ -5,6 +5,7 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
 import org.mtransit.parser.DefaultAgencyTools;
 import org.mtransit.parser.Utils;
 import org.mtransit.parser.gtfs.data.GCalendar;
@@ -104,7 +105,7 @@ public class SteJulieOMITSJUBusAgencyTools extends DefaultAgencyTools {
 		return CleanUtils.cleanLabel(routeLongName);
 	}
 
-	private static final String AGENCY_COLOR = "649039";
+	private static final String AGENCY_COLOR = "1F1F1F"; // DARK GRAY (from GTFS)
 
 	@Override
 	public String getAgencyColor() {
@@ -113,24 +114,27 @@ public class SteJulieOMITSJUBusAgencyTools extends DefaultAgencyTools {
 
 	@Override
 	public String getRouteColor(GRoute gRoute) {
-		if ("1".equals(gRoute.getRouteShortName())) return "7E4A94";
-		if ("3".equals(gRoute.getRouteShortName())) return "41A62B";
-		if ("4".equals(gRoute.getRouteShortName())) return "EAC800";
-		if ("5".equals(gRoute.getRouteShortName())) return "E2007A";
-		if ("6".equals(gRoute.getRouteShortName())) return "B49C4C";
-		if ("7".equals(gRoute.getRouteShortName())) return "60BDDC";
-		if ("8".equals(gRoute.getRouteShortName())) return "F39400";
-		if ("T1".equals(gRoute.getRouteShortName())) return "E53834";
-		if ("T2".equals(gRoute.getRouteShortName())) return "007C79";
-		if ("T3".equals(gRoute.getRouteShortName())) return "79421E";
-		if ("325".equals(gRoute.getRouteShortName())) return "57585A";
-		if ("330".equals(gRoute.getRouteShortName())) return "57585A";
-		if ("340".equals(gRoute.getRouteShortName())) return "57585A";
-		if ("350".equals(gRoute.getRouteShortName())) return "57585A";
-		if ("600".equals(gRoute.getRouteShortName())) return "9C9E9F";
-		System.out.printf("\nUnexpected route color for %s!\n", gRoute);
-		System.exit(-1);
-		return null;
+		if (StringUtils.isEmpty(gRoute.getRouteColor())) {
+			if ("1".equals(gRoute.getRouteShortName())) return "7E4A94";
+			if ("3".equals(gRoute.getRouteShortName())) return "41A62B";
+			if ("4".equals(gRoute.getRouteShortName())) return "EAC800";
+			if ("5".equals(gRoute.getRouteShortName())) return "E2007A";
+			if ("6".equals(gRoute.getRouteShortName())) return "B49C4C";
+			if ("7".equals(gRoute.getRouteShortName())) return "60BDDC";
+			if ("8".equals(gRoute.getRouteShortName())) return "F39400";
+			if ("T1".equals(gRoute.getRouteShortName())) return "E53834";
+			if ("T2".equals(gRoute.getRouteShortName())) return "007C79";
+			if ("T3".equals(gRoute.getRouteShortName())) return "79421E";
+			if ("325".equals(gRoute.getRouteShortName())) return "57585A";
+			if ("330".equals(gRoute.getRouteShortName())) return "57585A";
+			if ("340".equals(gRoute.getRouteShortName())) return "57585A";
+			if ("350".equals(gRoute.getRouteShortName())) return "57585A";
+			if ("600".equals(gRoute.getRouteShortName())) return "9C9E9F";
+			System.out.printf("\nUnexpected route color for %s!\n", gRoute);
+			System.exit(-1);
+			return null;
+		}
+		return super.getRouteColor(gRoute);
 	}
 
 	@Override
