@@ -1,6 +1,8 @@
 package org.mtransit.parser.ca_ste_julie_omitsju_bus;
 
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -83,7 +85,7 @@ public class SteJulieOMITSJUBusAgencyTools extends DefaultAgencyTools {
 		return MAgency.ROUTE_TYPE_BUS;
 	}
 
-	private static final long RID_STARTS_WITH_T = 20000l;
+	private static final long RID_STARTS_WITH_T = 20_000L;
 
 	@Override
 	public long getRouteId(GRoute gRoute) {
@@ -149,6 +151,16 @@ public class SteJulieOMITSJUBusAgencyTools extends DefaultAgencyTools {
 
 	@Override
 	public boolean mergeHeadsign(MTrip mTrip, MTrip mTripToMerge) {
+		List<String> headsignsValues = Arrays.asList(mTrip.getHeadsignValue(), mTripToMerge.getHeadsignValue());
+		if (mTrip.getRouteId() == RID_STARTS_WITH_T + 3L) { // T3
+			if (Arrays.asList( //
+					"Rural", //
+					"Terminus Ste-Julie" //
+			).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("Terminus Ste-Julie", mTrip.getHeadsignId());
+				return true;
+			}
+		}
 		System.out.printf("\nUnexpected trips to merge: %s & %s!\n", mTrip, mTripToMerge);
 		System.exit(-1);
 		return false;
