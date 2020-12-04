@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 import org.mtransit.parser.DefaultAgencyTools;
+import org.mtransit.parser.MTLog;
 import org.mtransit.parser.Utils;
 import org.mtransit.parser.gtfs.data.GCalendar;
 import org.mtransit.parser.gtfs.data.GCalendarDate;
@@ -21,8 +22,8 @@ import org.mtransit.parser.mt.data.MRoute;
 import org.mtransit.parser.CleanUtils;
 import org.mtransit.parser.mt.data.MTrip;
 
-// https://rtm.quebec/en/about/open-data
-// https://rtm.quebec/xdata/omitsju/google_transit.zip
+// https://exo.quebec/en/about/open-data
+// https://exo.quebec/xdata/omitsju/google_transit.zip
 public class SteJulieOMITSJUBusAgencyTools extends DefaultAgencyTools {
 
 	public static void main(String[] args) {
@@ -39,11 +40,11 @@ public class SteJulieOMITSJUBusAgencyTools extends DefaultAgencyTools {
 
 	@Override
 	public void start(String[] args) {
-		System.out.printf("\nGenerating OMITSJU bus data...");
+		MTLog.log("Generating OMITSJU bus data...");
 		long start = System.currentTimeMillis();
 		this.serviceIds = extractUsefulServiceIds(args, this);
 		super.start(args);
-		System.out.printf("\nGenerating OMITSJU bus data... DONE in %s.\n", Utils.getPrettyDuration(System.currentTimeMillis() - start));
+		MTLog.log("Generating OMITSJU bus data... DONE in %s.", Utils.getPrettyDuration(System.currentTimeMillis() - start));
 	}
 
 	@Override
@@ -76,11 +77,6 @@ public class SteJulieOMITSJUBusAgencyTools extends DefaultAgencyTools {
 	}
 
 	@Override
-	public boolean excludeRoute(GRoute gRoute) {
-		return super.excludeRoute(gRoute);
-	}
-
-	@Override
 	public Integer getAgencyRouteType() {
 		return MAgency.ROUTE_TYPE_BUS;
 	}
@@ -99,9 +95,7 @@ public class SteJulieOMITSJUBusAgencyTools extends DefaultAgencyTools {
 				return id + RID_STARTS_WITH_T;
 			}
 		}
-		System.out.printf("\nUnexpected route ID for %s!\n", gRoute);
-		System.exit(-1);
-		return -1;
+		throw new MTLog.Fatal("Unexpected route ID for %s!", gRoute);
 	}
 
 	@Override
@@ -137,9 +131,7 @@ public class SteJulieOMITSJUBusAgencyTools extends DefaultAgencyTools {
 			if ("340".equals(gRoute.getRouteShortName())) return "57585A";
 			if ("350".equals(gRoute.getRouteShortName())) return "57585A";
 			if ("600".equals(gRoute.getRouteShortName())) return "9C9E9F";
-			System.out.printf("\nUnexpected route color for %s!\n", gRoute);
-			System.exit(-1);
-			return null;
+			throw new MTLog.Fatal("Unexpected route color for %s!", gRoute);
 		}
 		return super.getRouteColor(gRoute);
 	}
@@ -161,9 +153,7 @@ public class SteJulieOMITSJUBusAgencyTools extends DefaultAgencyTools {
 				return true;
 			}
 		}
-		System.out.printf("\nUnexpected trips to merge: %s & %s!\n", mTrip, mTripToMerge);
-		System.exit(-1);
-		return false;
+		throw new MTLog.Fatal("Unexpected trips to merge: %s & %s!", mTrip, mTripToMerge);
 	}
 
 	private static final Pattern DIRECTION = Pattern.compile("(direction )", Pattern.CASE_INSENSITIVE);
@@ -181,11 +171,11 @@ public class SteJulieOMITSJUBusAgencyTools extends DefaultAgencyTools {
 		return CleanUtils.cleanLabelFR(tripHeadsign);
 	}
 
-	private static final Pattern START_WITH_FACE_A = Pattern.compile("^(face à )", Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
+	private static final Pattern START_WITH_FACE_A = Pattern.compile("^(face à )", Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE | Pattern.CANON_EQ);
 	private static final Pattern START_WITH_FACE_AU = Pattern.compile("^(face au )", Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
 	private static final Pattern START_WITH_FACE = Pattern.compile("^(face )", Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
 
-	private static final Pattern SPACE_FACE_A = Pattern.compile("( face à )", Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
+	private static final Pattern SPACE_FACE_A = Pattern.compile("( face à )", Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE | Pattern.CANON_EQ);
 	private static final Pattern SPACE_WITH_FACE_AU = Pattern.compile("( face au )", Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
 	private static final Pattern SPACE_WITH_FACE = Pattern.compile("( face )", Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
 
@@ -232,23 +222,17 @@ public class SteJulieOMITSJUBusAgencyTools extends DefaultAgencyTools {
 			} else if (gStop.getStopId().startsWith("LON")) {
 				stopId = 1_000_000;
 			} else {
-				System.out.printf("\nStop doesn't have an ID (start with)! %s\n", gStop);
-				System.exit(-1);
-				return -1;
+				throw new MTLog.Fatal("Stop doesn't have an ID (start with)! %s", gStop);
 			}
 			if (gStop.getStopId().endsWith("A")) {
 				stopId += 100_000;
 			} else if (gStop.getStopId().endsWith("B")) {
 				stopId += 200_000;
 			} else {
-				System.out.printf("\nStop doesn't have an ID (end with)! %s!\n", gStop);
-				System.exit(-1);
-				return -1;
+				throw new MTLog.Fatal("Stop doesn't have an ID (end with)! %s!", gStop);
 			}
 			return stopId + digits;
 		}
-		System.out.printf("\nUnexpected stop ID for %s!\n", gStop);
-		System.exit(-1);
-		return -1;
+		throw new MTLog.Fatal("Unexpected stop ID for %s!", gStop);
 	}
 }
