@@ -16,8 +16,8 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.mtransit.parser.Constants.SPACE_;
-import static org.mtransit.parser.StringUtils.EMPTY;
+import static org.mtransit.commons.StringUtils.EMPTY;
+import static org.mtransit.commons.Constants.SPACE_;
 
 // https://exo.quebec/en/about/open-data
 // https://exo.quebec/xdata/omitsju/google_transit.zip
